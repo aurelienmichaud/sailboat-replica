@@ -4,9 +4,9 @@
 #include "servo.h"
 #include "Timer.h"
 
-#define SERVO_MOTOR_MAX_ANGLE 60.0
-#define SERVO_ARR 255
-#define SERVO_PSC 5624
+#define _SERVO_MOTOR_MAX_ANGLE 60.0
+#define _SERVO_ARR 5624
+#define _SERVO_PSC 255
 
 static TIM_TypeDef *servoTimer;
 
@@ -19,7 +19,7 @@ void servo_init(TIM_TypeDef *timer)
 	servoTimer = timer;
 	
 	/* Timer configuration in PWM mode */
-	Timer_PWM_generation_conf(servoTimer, SERVO_ARR, SERVO_PSC);
+	Timer_PWM_generation_conf(servoTimer, _SERVO_ARR, _SERVO_PSC);
 	
 	/* TIM1 and TIM4 will both use the eighth pin of respectively GPIOA and GPIOB */
 	LLGPIO_struct.Pin 					= LL_GPIO_PIN_8;
@@ -55,32 +55,35 @@ void servo_setAngle(int weatherVineAngle)
 	double tau;
 	int crr;
 	
-	/*
+	
 	if (weatherVineAngle < 45 || weatherVineAngle > 315) {
-		tau = SERVO_MOTOR_MAX_ANGLE;
+		tau = _SERVO_MOTOR_MAX_ANGLE;
 	}
 	
 	else if (weatherVineAngle > 45 && weatherVineAngle <= 180) {
-		tau = SERVO_MOTOR_MAX_ANGLE - (SERVO_MOTOR_MAX_ANGLE / 90.0) * ((2.0 / 3.0) * (double) weatherVineAngle - 30);
+		tau = _SERVO_MOTOR_MAX_ANGLE - (_SERVO_MOTOR_MAX_ANGLE / 90.0) * ((2.0 / 3.0) * (double) weatherVineAngle - 30);
 	}
 	else {
-		tau = SERVO_MOTOR_MAX_ANGLE - (SERVO_MOTOR_MAX_ANGLE / 90.0) * ((2.0 / 3.0) * (360.0 - (double) weatherVineAngle) - 30);
+		tau = _SERVO_MOTOR_MAX_ANGLE - (_SERVO_MOTOR_MAX_ANGLE / 90.0) * ((2.0 / 3.0) * (360.0 - (double) weatherVineAngle) - 30);
 	}
-	*/
 	
+	/*
 	if (weatherVineAngle < 45 || weatherVineAngle > 315) {
 		tau = 0;
 	}
 	
 	else if (weatherVineAngle > 45 && weatherVineAngle <= 180) {
-		tau = (SERVO_MOTOR_MAX_ANGLE / 90.0) * ((2.0 / 3.0) * (double) weatherVineAngle - 30);
+		tau = (_SERVO_MOTOR_MAX_ANGLE / 90.0) * ((2.0 / 3.0) * (double) weatherVineAngle - 30);
 	}
-	/* weatherVineAngle > 180 && weatherVineAngle < 315 */
+	weatherVineAngle > 180 && weatherVineAngle < 315
 	else {
-		tau = (SERVO_MOTOR_MAX_ANGLE / 90.0) * ((2.0 / 3.0) * (360.0 - (double) weatherVineAngle) - 30);
+		tau = (_SERVO_MOTOR_MAX_ANGLE / 90.0) * ((2.0 / 3.0) * (360.0 - (double) weatherVineAngle) - 30);
 	}
+	*/
 	
-	crr = (tau * (double) SERVO_ARR) / SERVO_MOTOR_MAX_ANGLE;
+	/*crr = (tau * (double) _SERVO_ARR) / _SERVO_MOTOR_MAX_ANGLE;*/
+	
+	crr = (((double)_SERVO_ARR) / 20.0) * ((tau / (double)_SERVO_MOTOR_MAX_ANGLE) + 1);
 	
 	Timer_PWM_set_high_level_counter(servoTimer, crr);
 }
