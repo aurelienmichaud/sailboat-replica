@@ -42,12 +42,12 @@ int main(void)
   /* Configure the system clock to 72 MHz */
   SystemClock_Config();
 
+	/* Init and start the whole embedded system */
 	main_controller_start();
 	
   /* Infinite loop */
-  while (1)
-  {
-		
+  while (1) {
+		/* NOTHING : the main controller do it all */
   }
 }
 

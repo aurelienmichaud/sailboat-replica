@@ -1,11 +1,15 @@
 #ifndef _RF_INPUT_H_
 #define _RF_INPUT_H_
 
-/* Servo Engine can only work with TIM1 or TIM4 */
-void rf_input_init(int channel);
+#include "stm32f1xx_ll_tim.h"
 
-int rf_input_getAngle(void);
+#define _RF_INPUT_ANGLE_RANGE	10.0
 
+/* RF Input Module can only work with TIM4 */
+void rf_input_start(TIM_TypeDef *RFInputTimer, int channel);
+
+/* Returns an angle in [ - _RF_INPUT_ANGLE_RANGE ; _RF_INPUT_ANGLE_RANGE] */
+int rf_input_get_angle(void);
 
 #endif // _RF_INPUT_H_
 
